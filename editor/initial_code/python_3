@@ -1,6 +1,6 @@
 def checkio(house, stephan, ghost):
 
-    return None
+    return "N" or "S" or "W" or "E"
 
 #These "asserts" using only for self-checking and not necessary for auto-testing
 if __name__ == '__main__':
@@ -16,4 +16,3 @@ if __name__ == '__main__':
          "E", "ENW", "ENW", "W",
          "", "N", "N", ""],
         11, 6)
-
