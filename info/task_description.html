@@ -1,9 +1,26 @@
 <p>
-    <i>( Describe task in general )</i>
+    On the island Stephen discovered the old house. After exploring,
+    he found that the house has 16 ( 4x4 ) rooms, but they are connected in a strange way.
+    Each room has no more than four doors, but they can enter into any room and not to the neighboring.
+    When he was in the last room (#16) he heard a strange sound.
+    With the help of his sensors he recognized that in the first room (#1) appeared a ghost.
+    You should help Stephen get away from the house.
+    To do this, he needs to get into the first room (#1) and does not meet the ghost.
 </p>
 
 <p>
-    Sum two passed ints
+    On the each step you are given three arguments:
+    the map of the house, Stephen's location (room's number) and Ghost's location (room's number).
+    The map is represented as a list, where each element is connection between rooms.
+    Connections are lists of two integers (from 1 to 16 inclusively), that show which rooms are connected.
+</p>
+<p>
+    On each step you should return a room's number, where you want to move Stephen. After your step, the ghost makes its move.
+    The ghost has an algorithm for moving. If stephen in a "neighbouring" room, then the ghost will catch him.
+    For other cases, the ghost looks at numbers -- if Stephen's room has lesser number than ghost's room,
+    then it try to move in rooms with lesser numbers (compare with its number). And versus. If the ghost has several equal variants for move,
+    then it makes random choice from priority numbers. For example: Stephen in the 4th room,
+    the ghost in the 10th and from this room 4 doors: 2, 6, 12, 14; the ghost randomly select from 2 and 6.
 </p>
 
 <p style="text-align: center;">
