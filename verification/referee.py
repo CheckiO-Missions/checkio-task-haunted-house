@@ -3,6 +3,7 @@ import random
 from checkio.signals import ON_CONNECT
 from checkio import api
 from checkio.referees.multicall import CheckiORefereeMulti
+from checkio.referees.cover_codes import unwrap_args
 
 from tests import TESTS
 
@@ -20,33 +21,35 @@ def initial_referee(data):
     data["stephan"] = 16
     data["ghost"] = 1
     data['step_count'] = 0
+    data["input"] = [data["house"], 16, 1]
     return data
 
 
 def process_referee(referee_data, user_result):
     referee_data['step_count'] += 1
-    stephen = referee_data["stephen"]
+    stephan = referee_data["stephan"]
     ghost = referee_data["ghost"]
     house = referee_data["house"]
+    referee_data["ghost_move"] = ""
     if referee_data['step_count'] > MAX_STEP:
         referee_data.update({"result": False, "result_addon": "Too many moves."})
         return referee_data
     if not isinstance(user_result, str) or user_result not in "NSWE":
         referee_data.update({"result": False, "result_addon": 'The function should return "N", "S", "W" or "E".'})
         return referee_data
-    if user_result in referee_data["house"][stephen - 1]:
+    if user_result in referee_data["house"][stephan - 1]:
         referee_data.update({"result": False, "result_addon": 'Stefan ran into a closed door. It was hurt.'})
         return referee_data
-    if stephen == 1 and user_result == "N":
-        referee_data.update({"result": True, "result_addon": 'Stefan has escaped.', 'stephen': 0})
+    if stephan == 1 and user_result == "N":
+        referee_data.update({"result": True, "result_addon": 'Stefan has escaped.', 'stephan': 0})
         return referee_data
-    stephen += DIRS[user_result]
-    if ((user_result == "W" and stephen % 4 == 1) or (user_result == "E" and stephen % 4 == 0) or
-            (stephen < 1) or (stephen > 16)):
+    stephan += DIRS[user_result]
+    if ((user_result == "W" and stephan % 4 == 1) or (user_result == "E" and stephan % 4 == 0) or
+            (stephan < 1) or (stephan > 16)):
         referee_data.update({"result": False, "result_addon": 'Stefan has gone out into the unknown.'})
         return referee_data
-    referee_data["stephen"] = stephen
-    sx, sy = stephen % 4, ((stephen - 1) // 4) + 1
+    referee_data["stephan"] = stephan
+    sx, sy = stephan % 4, ((stephan - 1) // 4) + 1
     ghost_dirs = [ch for ch in "NWES" if ch not in house[ghost - 1]]
     if ghost % 4 == 1 and "W" in ghost_dirs:
         ghost_dirs.remove("W")
@@ -63,15 +66,16 @@ def process_referee(referee_data, user_result):
             ghost_dist[0] += d
     ghost_move = random.choice(ghost_dist[0])
     ghost += DIRS[ghost_move]
-    referee_data.update({"result": False,
-                         "result_addon": 'Stefan has gone out into the unknown.',
+    referee_data.update({"result": True,
+                         "result_addon": 'Next move.',
                          "ghost": ghost,
-                         "ghost_move": ghost_move})
+                         "ghost_move": ghost_move,
+                         "input": [house, stephan, ghost]})
     return referee_data
 
 
 def is_win_referee(referee_data):
-    return referee_data['stephen'] == 0
+    return referee_data['stephan'] == 0
 
 
 api.add_listener(
@@ -81,4 +85,8 @@ api.add_listener(
         initial_referee=initial_referee,
         process_referee=process_referee,
         is_win_referee=is_win_referee,
+        cover_code={
+            "python-27": unwrap_args,
+            "python-3": unwrap_args
+        }
     ).on_ready)
