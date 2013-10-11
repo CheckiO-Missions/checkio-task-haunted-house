@@ -1,32 +1,33 @@
 <p>
-    On the island Stephen discovered the old house. After exploring,
-    he found that the house has 16 ( 4x4 ) rooms.
-    Each room has four doors, but some doors are closed and outer doors lead into the unknown.
-    The only exit from the house is the north door in the 1st room.
-    When he was in the last room (#16) he heard a strange sound.
-    With the help of his sensors he recognized that in the first room (#1) appeared a ghost.
-    You should help Stephen get away from the house.
-    To do this, he needs to get into the first room (#1) and does not meet the ghost.
+    Stephen has wandered away from the ships landing site and discovered a spooky old house in the woods. 
+    After exploring it, he found that the house has 16 ( 4x4 ) rooms.
+    Each room has four doors, but some of doors are blocked off and the outer doors lead into the darkness.
+    The only exit from the house is the northern door in the 1st room.
+    When he was in the last room (#16) he heard a haunting groan follwed by a grinding noise and the sound of chains rattling.
+    He started a sensor sweep of the house and discovered that a ghost has appeared in the first (#1) room.
+    Terrified, Stephen has turned to you for help escaping the house.
+    You'll both need to make it to the first room without encountering the ghost, for if you meet it, bad things may happen...
 </p>
 
 <p>
-    Stephen can move at four directions: north, south, west and east ("N", "S", "W", "E")
-    if doors are not closed for these directions. Stephen is scared and can not stand still.
-    Also don not try to move in outer door -- the only way out of the house is the northern door in 1st room.
-    On each step you should return a direction as a letter, where you want to move Stephen.
-    After your step, the ghost makes its move. The ghost know where is Stephen and trying to catch him.
-    It move by the shortest way to Stephen, but it is little dumb and using Euclidean distance for choice direction.
-    The ghost is always moving it can not stand still too. You are limited by <strong>30</strong> moves.
+    The two of you can move in four possible directions: north, south, west and east ("N", "S", "W", "E")
+    so long as the doors are not blocked off. Stephen is scared and cannot stand still.
+    You'll need to make sure that he doesn't try to escape by any of the other outer doors as he will certainly fall into the dark abyss.
+    The only safe way out of the house through the northern door in first room.
+    On each step you should return a direction as a letter, telling Stephen where you want him to move.
+    After he takes a step, the ghost will make its move. The ghost knows where you and Stephen are, and is actively trying to catch you.
+    It cannot sit still and will always try to take the shortest path to where you and Stephen are, but it is little dumb and using Euclidean distance for choice direction.
+    You are limited to <strong>30</strong> moves, after that, the ghost summons his friends and will capture you both...
 </p>
 
 
 <p>
     On the each step you are given three arguments:
-    the map of the house, Stephen's location (room's number) and Ghost's location (room's number).
+    the map of the house, Stephens location (room number) and the Ghosts location (room number).
     The map is represented as a list with 16 elements, where each element corresponds to a room (1st element -- 1st room).
-    Each element of the list is a string with closed directions.
-    For example: If 6th element (index 5) is "NS", then in the 6th room the north and south doors are closed.<br>
-    Be careful: Outer doors are always open. You should exit only in the north door in the 1st room.
+    Each element on the list is a string with blocked directions.
+    For example: If the 6th element (index 5) is "NS", then in the 6th room the north and south doors are blocked.<br>
+    Be careful: Outer doors are always unblocked. You should exit only in the north door in the 1st room.
 </p>
 
 <p style="text-align: center;">
@@ -35,11 +36,11 @@
 </p>
 
 <p>
-    <strong>Input: </strong> The map of the house, Stephen's location (room's number) and Ghost's location (room's number).
+    <strong>Input: </strong> The map of the house, Stephens location (room number) and the Ghosts location (room number).
 </p>
 
 <p>
-    <strong>Output: </strong> Stephan's move. A string.
+    <strong>Output: </strong> Stephans move. A string.
 </p>
 
 
@@ -65,5 +66,5 @@ checkio(
 
 <p class="for_info_only">
     <strong>How it is used: </strong>
-    This task is useful for learning game algorithms.
+    This task is useful for path finding algorithms.
 </p>
