@@ -37,6 +37,7 @@ def process_referee(referee_data, user_result):
     if not isinstance(user_result, str) or user_result not in "NSWE":
         referee_data.update({"result": False, "result_addon": 'The function should return "N", "S", "W" or "E".'})
         return referee_data
+    referee_data["stephan_move"] = user_result
     if user_result in referee_data["house"][stephan - 1]:
         referee_data.update({"result": False, "result_addon": 'Stefan ran into a closed door. It was hurt.'})
         return referee_data
@@ -44,26 +45,32 @@ def process_referee(referee_data, user_result):
         referee_data.update({"result": True, "result_addon": 'Stefan has escaped.', 'stephan': 0})
         return referee_data
     stephan += DIRS[user_result]
-    if ((user_result == "W" and stephan % 4 == 1) or (user_result == "E" and stephan % 4 == 0) or
+    if ((user_result == "W" and stephan % 4 == 0) or (user_result == "E" and stephan % 4 == 1) or
             (stephan < 1) or (stephan > 16)):
         referee_data.update({"result": False, "result_addon": 'Stefan has gone out into the unknown.'})
         return referee_data
     referee_data["stephan"] = stephan
-    sx, sy = stephan % 4, ((stephan - 1) // 4) + 1
+    sx, sy = (stephan - 1) % 4, (stephan - 1) // 4
     ghost_dirs = [ch for ch in "NWES" if ch not in house[ghost - 1]]
     if ghost % 4 == 1 and "W" in ghost_dirs:
         ghost_dirs.remove("W")
     if ghost % 4 == 0 and "E" in ghost_dirs:
         ghost_dirs.remove("E")
+    if ghost < 4 and "N" in ghost_dirs:
+        ghost_dirs.remove("N")
+    if ghost > 12 and "S" in ghost_dirs:
+        ghost_dirs.remove("S")
+
     ghost_dist = ["", 1000]
     for d in ghost_dirs:
         new_ghost = ghost + DIRS[d]
-        gx, gy = new_ghost % 4, ((new_ghost - 1) // 4) + 1
+        gx, gy = (new_ghost - 1) % 4, (new_ghost - 1) // 4
         dist = (gx - sx) ** 2 + (gy - sy) ** 2
         if ghost_dist[1] > dist:
             ghost_dist = [d, dist]
         elif ghost_dist[1] == dist:
             ghost_dist[0] += d
+    print("GHOST MOVE", ghost_dist)
     ghost_move = random.choice(ghost_dist[0])
     ghost += DIRS[ghost_move]
     referee_data.update({"result": True,
