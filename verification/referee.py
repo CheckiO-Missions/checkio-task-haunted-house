@@ -32,14 +32,14 @@ def process_referee(referee_data, user_result):
     house = referee_data["house"]
     referee_data["ghost_move"] = ""
     if referee_data['step_count'] > MAX_STEP:
-        referee_data.update({"result": False, "result_addon": "Too many moves."})
+        referee_data.update({"result": False, "result_addon": "Too many moves.", "stephan_move": ""})
         return referee_data
     if not isinstance(user_result, str) or user_result not in "NSWE":
         referee_data.update({"result": False, "result_addon": 'The function should return "N", "S", "W" or "E".'})
         return referee_data
     referee_data["stephan_move"] = user_result
     if user_result in referee_data["house"][stephan - 1]:
-        referee_data.update({"result": False, "result_addon": 'Stefan ran into a closed door. It was hurt.'})
+        referee_data.update({"result": False, "result_addon": 'Stefan ran into a closed door. It was hurt.', "wall": True})
         return referee_data
     if stephan == 1 and user_result == "N":
         referee_data.update({"result": True, "result_addon": 'Stefan has escaped.', 'stephan': 0})
@@ -73,11 +73,16 @@ def process_referee(referee_data, user_result):
     print("GHOST MOVE", ghost_dist)
     ghost_move = random.choice(ghost_dist[0])
     ghost += DIRS[ghost_move]
+    if ghost == stephan:
+        referee_data.update({"result": False, "result_addon": 'The ghost caught Stephan.', "ghost": ghost,
+                             "ghost_move": ghost_move, })
+        return referee_data
     referee_data.update({"result": True,
                          "result_addon": 'Next move.',
                          "ghost": ghost,
                          "ghost_move": ghost_move,
-                         "input": [house, stephan, ghost]})
+                         "input": [house, stephan, ghost],
+                         "wall": False})
     return referee_data
 
 

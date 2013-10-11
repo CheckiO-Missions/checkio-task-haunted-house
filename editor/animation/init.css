@@ -53,6 +53,10 @@
     white-space: pre-wrap;
 }
 
+.animation-content .explanation svg {
+    padding: 3px;
+}
+
 .animation-content .error{
     color: #de0202;
     border-color: #de0202;
