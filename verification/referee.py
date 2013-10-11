@@ -47,7 +47,7 @@ def process_referee(referee_data, user_result):
     stephan += DIRS[user_result]
     if ((user_result == "W" and stephan % 4 == 0) or (user_result == "E" and stephan % 4 == 1) or
             (stephan < 1) or (stephan > 16)):
-        referee_data.update({"result": False, "result_addon": 'Stefan has gone out into the unknown.'})
+        referee_data.update({"result": False, "result_addon": 'Stefan has gone out into the darkness.'})
         return referee_data
     referee_data["stephan"] = stephan
     sx, sy = (stephan - 1) % 4, (stephan - 1) // 4
