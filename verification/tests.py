@@ -8,18 +8,33 @@ Each test is dict with
 """
 
 TESTS = {
-    "Basics": {
+    "1. Basics": {
         "house": [
             "", "S", "S", "",
             "E", "NW", "NS", "",
             "E", "WS", "NS", "",
             "", "N", "N", ""]
     },
-    "Extra": {
+    "2. Basics": {
         "house": [
             "", "", "", "",
             "E", "ESW", "ESW", "W",
             "E", "ENW", "ENW", "W",
             "", "", "", ""]
-    }
+    },
+    "3. Extra": {
+        "house": [
+            "", "", "ES", "W",
+            "E", "W", "N", "",
+            "E", "WS", "S", "",
+            "", "N", "N", ""]
+    },
+    "4. Extra": {
+        "house": [
+            "", "S", "", "",
+            "E", "WNE", "W", "",
+            "", "E", "W", "",
+            "", "E", "W", ""]
+    },
+
 }

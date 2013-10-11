@@ -70,7 +70,6 @@ def process_referee(referee_data, user_result):
             ghost_dist = [d, dist]
         elif ghost_dist[1] == dist:
             ghost_dist[0] += d
-    print("GHOST MOVE", ghost_dist)
     ghost_move = random.choice(ghost_dist[0])
     ghost += DIRS[ghost_move]
     if ghost == stephan:
