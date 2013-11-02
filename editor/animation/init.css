@@ -163,5 +163,34 @@ fieldset[disabled] .btn {
     background-color: #eeeeee;
 }
 
-/* Your CSS */
-/*          */
+.tryit-content .tooltip{
+    z-index: 9999;
+    text-align: center;
+    /*float: left;*/
+    position: absolute;
+    border: solid #294270 1px;
+
+    top: 40px;
+    left: 40px;
+    display: none;
+    width: 80px;
+    font-size: 14px;
+    background-color: #8FC7ED;
+    /*opacity: 0.5;*/
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;;
+}
+
+.tryit-content .bn-reset {
+    margin-top: 10px;
+}
+
+.tryit-content svg {
+    padding: 5px;
+    
+}
+
+.tryit-content svg text {
+    cursor: pointer;
+}
