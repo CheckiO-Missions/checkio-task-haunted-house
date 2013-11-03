@@ -70,7 +70,10 @@
 .tryit-content .tool td{
     text-align: center;
     vertical-align: top;
-    padding: 3px;
+    /*padding: 3px;*/
+    font-family: Verdana, Arial, sans-serif;
+    color: #294270;
+    font-size: 16px;
 }
 
 /*it for firefox*/
@@ -80,9 +83,10 @@
 
 .tryit-content .checkio-result{
     font-size: 16px;
+    margin-top: 10px;
     text-align: center;
     color: #294270;
-    width: 160px;
+    /*width: 160px;*/
 }
 
 .tryit-content .btn {
@@ -170,8 +174,8 @@ fieldset[disabled] .btn {
     position: absolute;
     border: solid #294270 1px;
 
-    top: 40px;
-    left: 40px;
+    top: 80px;
+    left: 80px;
     display: none;
     width: 80px;
     font-size: 14px;
@@ -182,8 +186,10 @@ fieldset[disabled] .btn {
     border-radius: 5px;;
 }
 
-.tryit-content .bn-reset {
-    margin-top: 10px;
+.tryit-content .bn-reset,
+.tryit-content .bn-check{
+    display: block;
+    margin: 20px auto 0 auto;
 }
 
 .tryit-content svg {
@@ -193,4 +199,14 @@ fieldset[disabled] .btn {
 
 .tryit-content svg text {
     cursor: pointer;
+}
+
+.tryit-content .tool td.ghost-control {
+    text-align: left;
+    padding-left: 20px;
+    vertical-align: middle;
+}
+
+.tryit-content .tool .ghost-control .btn{
+    font-weight: bold;
 }

@@ -100,37 +100,53 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             "E", "WS", "NS", "",
             "", "N", "N", ""];
         var endGame = false;
+        var autoCheck;
+        var bnDirs;
+        var conv_ret;
+
+        var checkGhost = function () {
+            var ghPos = tCanvas.getPositions()[1];
+            var stPos = tCanvas.getPositions()[0];
+            if (ghPos == stPos) {
+                $tryit.find(".checkio-result").html("Loss<br>Result:<br>" + conv_ret);
+                endGame = true;
+                tbCheck.attr("disabled", "disabled");
+                return false;
+            }
+        };
 //
         ext.set_console_process_ret(function (this_e, ret) {
+
+
             if (typeof(ret) === 'string') {
-                ret = ret.replace(/\'/g, "");
+                conv_ret = ret.replace(/\'/g, "");
             }
-            if (typeof(ret) != "string" || ret.length != 1 || "NSWE".indexOf(ret) == -1) {
-                $tryit.find(".checkio-result").html("Result (wrong):<br>" + ret);
+            if (typeof(ret) != "string" || conv_ret.length != 1 || "NSWE".indexOf(conv_ret) == -1) {
+                $tryit.find(".checkio-result").html("Wrong result:<br>" + ret);
                 return;
             }
             var house = tCanvas.getMap();
             var positions = tCanvas.getPositions();
             var stPos = positions[0];
             var ghPos = positions[1];
-            if (house[stPos - 1].indexOf(ret) != -1) {
-                $tryit.find(".checkio-result").html("Result (Wall):<br>" + ret);
-                tCanvas.animateCanvas(ret, null, true);
+            if (house[stPos - 1].indexOf(conv_ret) != -1) {
+                $tryit.find(".checkio-result").html("Loss<br>Result:<br>" + conv_ret);
+                tCanvas.animateCanvas(conv_ret, null, true);
                 endGame = true;
                 tbCheck.attr("disabled", "disabled");
                 return false;
             }
-            $tryit.find(".checkio-result").html("Result:<br>" + ret);
-            tCanvas.animateCanvas(ret);
+            $tryit.find(".checkio-result").html("Result:<br>" + conv_ret);
+            tCanvas.animateCanvas(conv_ret);
             stPos = tCanvas.getPositions()[0];
-            if (stPos === -3 && ret === 'N') {
-                $tryit.find(".checkio-result").html("Result (Win):<br>" + ret);
+            if (stPos === -3 && conv_ret === 'N') {
+                $tryit.find(".checkio-result").html("Win!<br>Result:<br>" + conv_ret);
                 endGame = true;
                 tbCheck.attr("disabled", "disabled");
                 return false;
             }
-            if (stPos < 1 || stPos > 16 || (ret == "W" && (stPos % 4 == 0)) || (ret == "E" && (stPos % 4 == 1))) {
-                $tryit.find(".checkio-result").html("Result (Out):<br>" + ret);
+            if (stPos < 1 || stPos > 16 || (conv_ret == "W" && (stPos % 4 == 0)) || (conv_ret == "E" && (stPos % 4 == 1))) {
+                $tryit.find(".checkio-result").html("Loss<br>Result:<br>" + conv_ret);
                 endGame = true;
                 tbCheck.attr("disabled", "disabled");
                 return false;
@@ -161,29 +177,38 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             if (ghPos % 4 == 0) {
                 ghDirs = ghDirs.replace("E", "");
             }
-            var maxGhost = ["", 1000];
-            for (i = 0; i < ghDirs.length; i++) {
-                var newGRow = gRow + dirs[ghDirs[i]][0];
-                var newGCol = gCol + dirs[ghDirs[i]][1];
-                var dist = Math.pow(newGRow - sRow, 2) + Math.pow(newGCol - sCol, 2)
-                if (dist < maxGhost[1]) {
-                    maxGhost = [ghDirs[i], dist];
+            if (ghDirs != "") {
+                if (autoCheck.is(":checked")) {
+                    var maxGhost = ["", 1000];
+                    for (i = 0; i < ghDirs.length; i++) {
+                        var newGRow = gRow + dirs[ghDirs[i]][0];
+                        var newGCol = gCol + dirs[ghDirs[i]][1];
+                        var dist = Math.pow(newGRow - sRow, 2) + Math.pow(newGCol - sCol, 2);
+                        if (dist < maxGhost[1]) {
+                            maxGhost = [ghDirs[i], dist];
+                        }
+                        else if (dist == maxGhost[1]) {
+                            maxGhost = [maxGhost[0] + ghDirs[i], dist];
+                        }
+                    }
+                    if (maxGhost[0] != "") {
+                        var best = maxGhost[0][Math.floor(Math.random() * maxGhost[0].length)];
+                        tCanvas.animateCanvas(null, best);
+                    }
                 }
-                else if (dist == maxGhost[1]) {
-                    maxGhost = [maxGhost[0] + ghDirs[i], dist];
+                else {
+                    bnDirs.each(function (index) {
+                        var $this = $(this);
+                        if (ghDirs.indexOf($this.data("dir")) != -1) {
+                            $this.removeAttr("disabled");
+                        }
+                    });
+                    autoCheck.attr("disabled", "disabled");
+                    tbCheck.attr("disabled", "disabled");
+
                 }
             }
-            if (maxGhost[0] != "") {
-                var best = maxGhost[0][Math.floor(Math.random() * maxGhost[0].length)];
-                tCanvas.animateCanvas(null, best);
-            }
-            ghPos = tCanvas.getPositions()[1];
-            if (ghPos == stPos) {
-                $tryit.find(".checkio-result").html("Result (Ghost):<br>" + ret);
-                endGame = true;
-                tbCheck.attr("disabled", "disabled");
-                return false;
-            }
+            checkGhost();
             return false;
 
         });
@@ -192,6 +217,8 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 
             $tryit = $(this_e.setHtmlTryIt(ext.get_template('tryit'))).find('.tryit-content');
             tbCheck = $tryit.find('.bn-check');
+            autoCheck = $tryit.find(".auto-ghost");
+            bnDirs = $tryit.find(".ghost-control .bn-dir");
             $tryit.find(".tryit-canvas").mouseenter(function (e) {
                 if (tooltip) {
                     return false;
@@ -207,7 +234,18 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
             tCanvas.createCanvas(defaultMap, 16, 1);
             tCanvas.createHouseFeedback();
 //            tCanvas.feedbackCanvas();
+            bnDirs.click(function () {
+                var $this = $(this);
+                var dir = $this.data("dir");
+                tCanvas.animateCanvas(null, dir);
+                autoCheck.removeAttr("disabled");
+                tbCheck.removeAttr("disabled");
+                bnDirs.attr("disabled", "disabled");
+                console.log(tCanvas.getPositions());
+                checkGhost();
 
+                return false;
+            });
             tbCheck.click(function (e) {
                 e.preventDefault();
                 var p = tCanvas.getPositions();
@@ -216,10 +254,12 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 return false;
             });
             var tbReset = $tryit.find(".bn-reset");
-            tbReset.click(function() {
+            tbReset.click(function () {
                 tCanvas.reset();
                 endGame = false;
-                tbCheck.removeAttr("disabled", "disabled");
+                tbCheck.removeAttr("disabled");
+                autoCheck.removeAttr("disabled");
+                bnDirs.attr("disabled", "disabled");
                 $tryit.find(".checkio-result").html("");
                 return false;
             })
@@ -475,7 +515,7 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 return [stPos, ghPos];
             };
 
-            this.reset = function() {
+            this.reset = function () {
                 stPos = 16;
                 ghPos = 1;
                 ghost.transform("t" + (1.5 * cell) + "," + 1.5 * cell);
