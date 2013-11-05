@@ -187,9 +187,11 @@ fieldset[disabled] .btn {
 }
 
 .tryit-content .bn-reset,
-.tryit-content .bn-check{
+.tryit-content .bn-check,
+.tryit-content .bn-stop{
     display: block;
     margin: 20px auto 0 auto;
+    width: 80px;
 }
 
 .tryit-content svg {
