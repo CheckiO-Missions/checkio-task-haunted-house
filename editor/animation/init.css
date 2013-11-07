@@ -207,8 +207,17 @@ fieldset[disabled] .btn {
     text-align: left;
     padding-left: 20px;
     vertical-align: middle;
+
 }
 
 .tryit-content .tool .ghost-control .btn{
     font-weight: bold;
+    width: 30px;
+    text-align: center;
+    margin: 2px 3px 0 3px;
 }
+
+.tryit-content .tool .ghost-control table{
+    margin: -20px auto 0 auto;
+}
+
