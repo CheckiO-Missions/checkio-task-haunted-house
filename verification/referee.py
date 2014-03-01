@@ -56,7 +56,7 @@ def process_referee(referee_data, user_result):
         ghost_dirs.remove("W")
     if ghost % 4 == 0 and "E" in ghost_dirs:
         ghost_dirs.remove("E")
-    if ghost < 4 and "N" in ghost_dirs:
+    if ghost <= 4 and "N" in ghost_dirs:
         ghost_dirs.remove("N")
     if ghost > 12 and "S" in ghost_dirs:
         ghost_dirs.remove("S")
