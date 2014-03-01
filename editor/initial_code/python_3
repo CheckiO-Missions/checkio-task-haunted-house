@@ -26,11 +26,11 @@ if __name__ == '__main__':
                 return False
             sx, sy = (stephan - 1) % 4, (stephan - 1) // 4
             ghost_dirs = [ch for ch in "NWES" if ch not in house[ghost - 1]]
-            if ghost % 4 and "W" in ghost_dirs:
+            if ghost % 4 == 1 and "W" in ghost_dirs:
                 ghost_dirs.remove("W")
             if not ghost % 4 and "E" in ghost_dirs:
                 ghost_dirs.remove("E")
-            if ghost < 4 and "N" in ghost_dirs:
+            if ghost <= 4 and "N" in ghost_dirs:
                 ghost_dirs.remove("N")
             if ghost > 12 and "S" in ghost_dirs:
                 ghost_dirs.remove("S")
