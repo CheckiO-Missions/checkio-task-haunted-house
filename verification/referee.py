@@ -35,7 +35,7 @@ def process_referee(referee_data, user_result):
         referee_data.update({"result": False, "result_addon": "Too many moves.", "stephan_move": ""})
         return referee_data
     if not isinstance(user_result, str) or user_result not in "NSWE":
-        referee_data.update({"result": False, "result_addon": 'The function should return "N", "S", "W" or "E".'})
+        referee_data.update({"result": False, "result_addon": 'The function should return N, S, W or E.'})
         return referee_data
     referee_data["stephan_move"] = user_result
     if user_result in referee_data["house"][stephan - 1]:
